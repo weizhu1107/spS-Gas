@@ -1,2 +1,2 @@
 # spS-Gas
-Simulation pipeline for sequencing genetic association study
+Simulation pipeline for sequencing based genetic association study
