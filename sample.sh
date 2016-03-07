@@ -64,6 +64,7 @@ mkdir -p $OUT_DIR/vcfs
 touch $OUT_DIR/vcfs/glfIndex.ped
 touch $OUT_DIR/bam.index
 
+##function for parallel computing
 func_S3(){
 	LN=$8
 	LOW_BOUND=$7
