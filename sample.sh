@@ -1,14 +1,16 @@
 #!/bin/bash
-GOTCLOUD_ROOT="/home/xc/ngs/gotcloud"
-OS_BIN="/home/xc/ngs/bin"
-OUT_DIR="/extra/xc/ngs/"$1"/"$2
-REGION_FL="/DataStorage/Backup/xc/ngs/region/"$2".txt"
-CAUSAL_FL="/DataStorage/Backup/xc/ngs/causal_list/"$2".txt"
+GOTCLOUD_ROOT=$1					##Gotcloud installed directory
+BASIS_DIR=$2						##Package installed basis directory
+OUT_BASIS_DIR=$3					##Output basis directory
+OS_BIN=$BASIS"/bin"
+OUT_DIR=$OUT_BASIS_DIR"/"$4"/"$5			##Scenario name of $4; serial number of $5
+REGION_FL=$OUT_BASIS_DIR"/region/"$5".txt"		##Region file location
+CAUSAL_FL=$OUT_BASIS_DIR"/causal_list/"$5".txt"		##Causal SNP file location
 
 mkdir -p $OUT_DIR
-let REGION_LN=100000
+let REGION_LN=$6
 
-hap_ref="/home/xc/ngs/hap_ref"
+hap_ref=$BASIS_DIR"/hap_ref"
 f=$hap_ref"/chr22_EUR.legend"
 
 count=0
@@ -32,9 +34,9 @@ let UP_BOUND=${a[1]}
 let LOW_BOUND_L=$(($LOW_BOUND - 500))
 let UP_BOUND_R=$(($UP_BOUND + 500))
 
-n_case=$3
-n_control=$4
-fcov=$5
+n_case=$7
+n_control=$8
+fcov=$9
 hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -o $OUT_DIR/h -dl $causl_l -n $n_case $n_control -int $LOW_BOUND $UP_BOUND >$OUT_DIR/debug.txt
 
 echo "hapgen2 completed..."
