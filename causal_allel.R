@@ -8,11 +8,15 @@
 #*********************************************************************************
 
 
-sn=commandArgs(TRUE)[1]
-fn=paste("/DataStorage/Backup/xc/ngs/h_legend_maf/",sn,".txt",sep="")
-ofn=paste("/DataStorage/Backup/xc/ngs/causal_list/",sn,".txt",sep="")
+#sn=commandArgs(TRUE)[1]
+#fn=paste("/DataStorage/Backup/xc/ngs/h_legend_maf/",sn,".txt",sep="")
+fn=commandArgs(TRUE)[1]				##SNP ref file location.
+#ofn=paste("/DataStorage/Backup/xc/ngs/causal_list/",sn,".txt",sep="")
+ofn=commandArgs(TRUE)[2]			##Output causal SNP list file.
 d=read.table(fn,header=T,sep=" ")
 
+##VarExplained program
+##So H.C., Gui A.H.S., Cherny S.S. and Sham P.C. (2011) Evaluating the heritability explained by known susceptibility variants: a survey of ten complex diseases. Genetic Epidemiology. https://sites.google.com/site/honcheongso/software/varexp
 func.Vg <- function (PA,RR1,RR2,K) {
 Paa = (1-PA)^2
 PAa = 2*PA*(1-PA)
@@ -38,10 +42,10 @@ res
 
 } 
 
-K=0.093
+K=sn=commandArgs(TRUE)[3]			##Prevalence
 d=d[which(d[,5]>0 & d[,5]<1),]
-nt=length(d[,1])
-nc=30
+nt=length(d[,1])				##Number of total SNPs
+nc=commandArgs(TRUE)[4]						## Number of causal SNPs (0<nc<16)
 ci=sample(nt,nc)
 dop=d[ci,]
 dop$RR1=1
@@ -57,7 +61,7 @@ opt_fun=function(x,maf,t_ve) {
 }
 
 i=1
-while(i<=30){
+while(i<=nc){
 	ve=0
 	RR2=1
 	RR1=(1+RR2)/2
