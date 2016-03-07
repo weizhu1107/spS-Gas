@@ -1,7 +1,12 @@
 #!/bin/bash
-for i in `seq 1 1000`;do
-	if [ -f "/DataStorage/Backup/xc/ngs/h_legend_maf/"$i".txt" ];then
+BASIS_DIR=$1
+num_reg=$2
+let prev=$3
+let nc=$4
+
+for i in `seq 1 $num_reg`;do
+	if [ -f $BASIS_DIR"/h_legend_maf/"$i".txt" ];then
 		echo $i
-		Rscript /home/xc/ngs/bin/causal_allel.R $i
+		Rscript $BASIS_DIR/bin/causal_allel.R $BASIS_DIR"/h_legend_maf/"$i".txt" $prev $nc
 	fi
 done
