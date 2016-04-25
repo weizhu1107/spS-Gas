@@ -9,3 +9,9 @@ Required packages:
 5. Gotcloud;
 6. ART sequencing reads simulator;
 7. PLINK and PLINK/SEQ.
+
+
+To run the pipeline:
+      ./init.sh haplotype_reference_file_location number_of_regions region_length basis_directory_for_output
+      ./sample.sh
+      ./call.sh
