@@ -1,11 +1,17 @@
 #!/bin/bash
-hap_ref=$1                          ##SNP Reference: Eur.legend
-num_reg=$2                          ##Number of regions created
-let REGION_LN=$3                    ##Region length
-BASIS_DIR=$4
-BIN_DIR=$5
-let prev=$6			##prevalence
-let nc=$7			##number of causal alleles
+count=0
+while read line;do
+        a[$count]=${line##*=}
+        count=$(( $count + 1 ))
+done < $1
+
+hap_ref=${a[0]}                          ##SNP Reference: Eur.legend
+num_reg=${a[3]}                          ##Number of regions created
+let REGION_LN=${a[4]}                    ##Region length
+BASIS_DIR=${a[1]}			##Basis_directory_for_output
+BIN_DIR=${a[2]}				##Basis_directory_for_bin
+let prev=${a[5]}			##Prevalence
+let nc=${a[6]}				##Number of causal alleles
 
 REG_DIR=$BASIS_DIR/region                   ##Region file directory
 mkdir -p $REG_DIR
@@ -29,7 +35,7 @@ for i in `seq 1 $num_reg`;do
   echo "LOW_BOUND:"$LOW_BOUND > $REG_DIR/$i.txt
   echo "UP_BOUND:"$UP_BOUND >> $REG_DIR/$i.txt
   
-  ./init_legend_dir.py $1 $LOW_BOUND $UP_BOUND $LGD_DIR/$i
+  $BIN_DIR/init_legend_dir.py $1 $LOW_BOUND $UP_BOUND $LGD_DIR/$i
 done
 
 
