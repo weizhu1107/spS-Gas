@@ -2,9 +2,10 @@
 hap_ref=$1                          ##SNP Reference: Eur.legend
 num_reg=$2                          ##Number of regions created
 let REGION_LN=$3                    ##Region length
-OUT_DIR=$4                          ##Region file directory
-mkdir -p $OUT_DIR
-
+REG_DIR=$4/region                   ##Region file directory
+mkdir -p $REG_DIR
+LGD_DIR=$4/legend_maf               ##Legend file directory
+mkdir -p $LGD_DIR
 
 for i in `seq 1 $num_reg`;do
   echo $i
@@ -19,6 +20,8 @@ for i in `seq 1 $num_reg`;do
   let LOW_BOUND_L=$(($LOW_BOUND - 500))
   let UP_BOUND_R=$(($UP_BOUND + 500))
 
-  echo "LOW_BOUND:"$LOW_BOUND > $OUT_DIR/$i.txt
-  echo "UP_BOUND:"$UP_BOUND >> $OUT_DIR/$i.txt
+  echo "LOW_BOUND:"$LOW_BOUND > $REG_DIR/$i.txt
+  echo "UP_BOUND:"$UP_BOUND >> $REG_DIR/$i.txt
+  
+  ./init_legend_dir.py $1 $LOW_BOUND $UP_BOUND $LGD_DIR/$i
 done
