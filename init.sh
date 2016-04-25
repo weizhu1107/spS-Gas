@@ -3,8 +3,9 @@ hap_ref=$1                          ##SNP Reference: Eur.legend
 num_reg=$2                          ##Number of regions created
 let REGION_LN=$3                    ##Region length
 BASIS_DIR=$4
-let prev=$5			##prevalence
-let nc=$6			##number of causal alleles
+BIN_DIR=$5
+let prev=$6			##prevalence
+let nc=$7			##number of causal alleles
 
 REG_DIR=$BASIS_DIR/region                   ##Region file directory
 mkdir -p $REG_DIR
@@ -35,6 +36,6 @@ done
 for i in `seq 1 $num_reg`;do
 	if [ -f $LGD_DIR"/"$i".txt" ];then
 		echo $i
-		Rscript $BASIS_DIR/scripts/causal_allel.R $LGD_DIR"/"$i".txt" $BASIS_DIR"/causal_list/"$i".txt" $prev $nc
+		Rscript $BIN_DIR/scripts/causal_allel.R $LGD_DIR"/"$i".txt" $BASIS_DIR"/causal_list/"$i".txt" $prev $nc
 	fi
 done
