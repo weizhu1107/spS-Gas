@@ -1,16 +1,16 @@
 #!/bin/bash
 GOTCLOUD_ROOT=$1					##Gotcloud installed directory
-BASIS_DIR=$2						##Package installed basis directory
-OUT_BASIS_DIR=$3					##Output basis directory
-OS_BIN=$BASIS"/bin"
-OUT_DIR=$OUT_BASIS_DIR"/"$4"/"$5			##Scenario name of $4; serial number of $5
-REGION_FL=$OUT_BASIS_DIR"/region/"$5".txt"		##Region file location
-CAUSAL_FL=$OUT_BASIS_DIR"/causal_list/"$5".txt"		##Causal SNP file location
-
-mkdir -p $OUT_DIR
+BIN_DIR=$2						##Package installed basis directory
+BASIS_DIR=$3					##Output basis directory
+OS_BIN=$BIN_DIR"/script"
+OUT_DIR=$BASIS_DIR"/"$4"/"$5			##Scenario name of $4; serial number of $5
+REGION_FL=$BASIS_DIR"/region/"$5".txt"		##Region file location
+CAUSAL_FL=$BASIS_DIR"/causal_list/"$5".txt"		##Causal SNP file location
 let REGION_LN=$6
 
-hap_ref=$BASIS_DIR"/hap_ref"
+mkdir -p $OUT_DIR
+
+hap_ref=$BIN_DIR"/hap_ref"
 f=$hap_ref"/chr22_EUR.legend"
 
 count=0
@@ -98,4 +98,3 @@ echo "sim sequencing reads"
 parallel --no-notice -j8 "func_S3 {}" ::: $OUT_DIR/fasta/* ::: $OUT_DIR ::: $GOTCLOUD_ROOT ::: $CHR ::: $LOW_BOUND_L ::: $UP_BOUND_R ::: $LOW_BOUND ::: $LN ::: $fcov
 
 rm -Rf $OUT_DIR/fasta &
-#perl $GOTCLOUD_ROOT/scripts/imake.pl $OUT_DIR/bam.index $OUT_DIR/vcfs/glfIndex.ped  $OUT_DIR/glfs
