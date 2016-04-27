@@ -1,7 +1,11 @@
+Gotcloud_installation_location=
 haplotype_reference_file_location=
 basis_directory_for_output=
 basis_directory_for_bin=
 number_of_regions=
 region_length=
 prevalence=
+number_of_cases=
+number_of_controls=
 number_of_causal_alleles=
+sequencing_coverage=
