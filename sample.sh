@@ -72,7 +72,6 @@ $OS_BIN/fa_per_subject.py $OUT_DIR/t.fa $OUT_DIR/h.legend $OUT_DIR/h.cases.haps 
 $OS_BIN/fa_per_subject.py $OUT_DIR/t.fa $OUT_DIR/h.legend $OUT_DIR/h.controls.haps $LOW_BOUND $UP_BOUND $OUT_DIR $OUT_DIR/h.controls.sample
 
 mkdir -p $OUT_DIR/read
-#mkdir -p $OUT_DIR/GATK
 mkdir -p $OUT_DIR/glfs
 mkdir -p $OUT_DIR/vcfs
 touch $OUT_DIR/vcfs/glfIndex.ped
@@ -92,8 +91,7 @@ func_S3(){
 	a=${i##*/}i
 	i=${a%.*}
 	art_illumina -sam -i $OUT_DIR/fasta/$i.fa -p -l 125 -f $fcov -m 200 -s 10 -o $OUT_DIR/read/$i >> $OUT_DIR/art.log
-#	cp $OUT_DIR/read/$i.sam $OUT_DIR/GATK/$i.sam
-	/home/xc/ngs/bin/sam_offset.py $OUT_DIR/read/$i.sam $LOW_BOUND $8
+	$OS_BIN/sam_offset.py $OUT_DIR/read/$i.sam $LOW_BOUND $8
 	$GOTCLOUD_ROOT/bin/samtools view -ubS $OUT_DIR/read/$i.sam | $GOTCLOUD_ROOT/bin/samtools sort - $OUT_DIR/read/$i"_sorted"
 	$GOTCLOUD_ROOT/bin/samtools index $OUT_DIR/read/$i"_sorted.bam"
 	BAM_NAME=$OUT_DIR/read/$i"_sorted.bam"
@@ -105,6 +103,7 @@ func_S3(){
 	rm -f $OUT_DIR/read/$i"_sorted.bam"
 	rm -f $OUT_DIR/read/$i"_sorted.bam.bai"
 }
+
 export -f func_S3
 echo "sim sequencing reads"
 parallel --no-notice -j8 "func_S3 {}" ::: $OUT_DIR/fasta/* ::: $OUT_DIR ::: $GOTCLOUD_ROOT ::: $CHR ::: $LOW_BOUND_L ::: $UP_BOUND_R ::: $LOW_BOUND ::: $LN ::: $fcov
