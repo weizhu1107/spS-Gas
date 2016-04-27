@@ -1,9 +1,25 @@
 #!/bin/bash
-GOTCLOUD_ROOT="/home/xc/ngs/gotcloud"
-OS_BIN="/home/xc/ngs/bin"
-OUT_DIR="/extra/xc/ngs/"$1"/"$2
-let REGION_LN=100000
-hap_ref="/home/xc/ngs/hap_ref"
+count=0
+while read line;do
+        ta[$count]=${line##*=}
+        count=$(( $count + 1 ))
+done < $1
+
+GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
+hap_ref=${ta[2]}                          		##SNP Reference: Eur.legend
+num_reg=${ta[4]}                          		##Number of regions created
+let REGION_LN=${ta[5]}                    		##Region length
+BASIS_DIR=${ta[1]}					##Basis_directory_for_output
+BIN_DIR=${ta[2]}					##Basis_directory_for_bin
+let n_case=${ta[7]}					##Number of cases
+let n_control=${ta[8]}					##Number of controls
+let fcov=${ta[10]}					##Sequencing coverage
+
+SCN="SIM_n"$n_case"_c"$fcov
+SN=$2
+
+OS_BIN=$BIN_DIR"/script"
+OUT_DIR=$BASIS_DIR"/"$SCN"/"$SN
 f=$hap_ref"/chr22_EUR.legend"
 
 #read design settings
@@ -20,7 +36,6 @@ n_control=${a[3]}
 
 let LOW_BOUND_L=$(($LOW_BOUND - 500))
 let UP_BOUND_R=$(($UP_BOUND + 500))
-#echo "RG:"$LOW_BOUND"-"$UP_BOUND
 fcov=${a[4]}
 
 mkdir -p $OUT_DIR/glfs
@@ -41,7 +56,7 @@ perl $GOTCLOUD_ROOT/scripts/imake.pl $OUT_DIR/bam.index $OUT_DIR/vcfs/glfIndex.p
 
 $GOTCLOUD_ROOT/bin/glfFlex --minMapQuality 30 --minDepth $FILTER_MIN_DP --maxDepth $FILTER_MAX_DP --uniformTsTv --smartFilter --ped $OUT_DIR/vcfs/glfIndex.ped -b $OUT_DIR/vcfs/chr22.vcf
 cut -f 1-8 $OUT_DIR/vcfs/chr22.vcf > $OUT_DIR/vcfs/chr22.sites.vcf
-#fi
+
 rm -f $OUT_DIR/glfs/* &
 
 let maxABL=65
