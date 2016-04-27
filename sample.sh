@@ -43,7 +43,6 @@ while read -a c_dd;do
 	c_ln=$(( $c_ln + 1 ))
 done < $CAUSAL_FL
 
-
 let LOW_BOUND=${a[0]}
 let UP_BOUND=${a[1]}
 let LOW_BOUND_L=$(($LOW_BOUND - 500))
@@ -60,7 +59,6 @@ echo "f_cov:"$fcov >> $OUT_DIR/config.txt
 
 CHR=22
 LN=51304566
-
 
 echo "hap_to_fa"
 cp $hap_ref/chr22.fa* $OUT_DIR/
@@ -99,7 +97,7 @@ func_S3(){
 	rm -f $OUT_DIR/read/$i[1-2].aln
 	rm -f $OUT_DIR/read/$i[1-2].fq
 	printf "$i\tALL\t$BAM_NAME\n" >> $OUT_DIR/bam.index
-	$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | samtools-hybrid calmd -uAEbr - $GOTCLOUD_ROOT/ref/human.g1k.v37.fa | $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | samtools-hybrid pileup -f $GOTCLOUD_ROOT/ref/human.g1k.v37.fa -g - > $OUT_DIR/glfs/$i.glf
+	$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $GOTCLOUD_ROOT/bin/samtools-hybrid calmd -uAEbr - $GOTCLOUD_ROOT/ref/human.g1k.v37.fa | $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | $GOTCLOUD_ROOT/bin/samtools-hybrid pileup -f $GOTCLOUD_ROOT/ref/human.g1k.v37.fa -g - > $OUT_DIR/glfs/$i.glf
 	rm -f $OUT_DIR/read/$i"_sorted.bam"
 	rm -f $OUT_DIR/read/$i"_sorted.bam.bai"
 }
