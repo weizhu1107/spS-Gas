@@ -6,20 +6,20 @@ while read line;do
 done < $1
 
 GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
-hap_ref=${ta[1]}                          		##Reference directory
-num_reg=${ta[4]}                          		##Number of regions created
-let REGION_LN=${ta[5]}                    		##Region length
-BASIS_DIR=${ta[2]}					##Basis_directory_for_output
-BIN_DIR=${ta[3]}					##Basis_directory_for_bin
-let n_case=${ta[7]}					##Number of cases
-let n_control=${ta[8]}					##Number of controls
-let fcov=${ta[10]}					##Sequencing coverage
+num_reg=${ta[3]}                          		##Number of regions created
+let REGION_LN=${ta[4]}                    		##Region length
+OUT_BASIS_DIR=${ta[1]}					##Basis_directory_for_output
+BASIS_DIR=${ta[2]}					##Basis_directory_for_bin
+let n_case=${ta[6]}					##Number of cases
+let n_control=${ta[7]}					##Number of controls
+let fcov=${ta[9]}					##Sequencing coverage
 
 SCN="SIM_n"$n_case"_c"$fcov
 SN=$2
 
-OS_BIN=$BIN_DIR"/script"
-OUT_DIR=$BASIS_DIR"/"$SCN"/"$SN
+hap_ref=$BASIS_DIR"/hap_ref"
+OS_BIN=$BASIS_DIR"/script"
+OUT_DIR=$OUT_BASIS_DIR"/"$SCN"/"$SN
 f=$hap_ref"/chr22_EUR.legend"
 
 #read design settings
