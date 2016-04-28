@@ -6,12 +6,12 @@ while read line;do
 done < $1
 
 GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
-hap_ref=${ta[2]}                          		##SNP Reference: Eur.legend
+hap_ref=${ta[1]}                          		##SNP Reference: Eur.legend
 num_reg=${ta[4]}                          		##Number of regions created
 let REGION_LN=${ta[5]}                    		##Region length
-BASIS_DIR=${ta[1]}					##Basis_directory_for_output
-BIN_DIR=${ta[2]}					##Basis_directory_for_bin
-let prev=${ta[5]}					##Prevalence
+BASIS_DIR=${ta[2]}					##Basis_directory_for_output
+BIN_DIR=${ta[3]}					##Basis_directory_for_bin
+prev=${ta[6]}						##Prevalence
 let n_case=${ta[7]}					##Number of cases
 let n_control=${ta[8]}					##Number of controls
 let nc=${ta[9]}						##Number of causal alleles
@@ -85,6 +85,8 @@ func_S3(){
 	GOTCLOUD_ROOT=$3
 	OUT_DIR=$2
 	fcov=$9
+	OS_BIN=${10}
+	hap_ref=${11}
 	i=$1
 	a=${i##*/}i
 	i=${a%.*}
@@ -105,6 +107,6 @@ func_S3(){
 
 export -f func_S3
 echo "sim sequencing reads"
-parallel --no-notice -j8 "func_S3 {}" ::: $OUT_DIR/fasta/* ::: $OUT_DIR ::: $GOTCLOUD_ROOT ::: $CHR ::: $LOW_BOUND_L ::: $UP_BOUND_R ::: $LOW_BOUND ::: $LN ::: $fcov
+parallel --no-notice -j8 "func_S3 {}" ::: $OUT_DIR/fasta/* ::: $OUT_DIR ::: $GOTCLOUD_ROOT ::: $CHR ::: $LOW_BOUND_L ::: $UP_BOUND_R ::: $LOW_BOUND ::: $LN ::: $fcov ::: $OS_BIN ::: $hap_ref
 
 rm -Rf $OUT_DIR/fasta &

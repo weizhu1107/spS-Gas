@@ -42,16 +42,15 @@ res
 
 } 
 
-K=sn=commandArgs(TRUE)[3]			##Prevalence
+K=as.numeric(commandArgs(TRUE)[3])			##Prevalence
 d=d[which(d[,5]>0 & d[,5]<1),]
-nt=length(d[,1])				##Number of total SNPs
-nc=commandArgs(TRUE)[4]						## Number of causal SNPs (0<nc<16)
+nt=length(d[,1])					##Number of total SNPs
+nc=as.numeric(commandArgs(TRUE)[4])			## Number of causal SNPs (0<nc<16)
 ci=sample(nt,nc)
 dop=d[ci,]
 dop$RR1=1
 dop$RR2=1
 dop$VE=0
-
 
 opt_fun=function(x,maf,t_ve) {
 	RR2=x
