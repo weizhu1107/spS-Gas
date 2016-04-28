@@ -1,5 +1,4 @@
 Gotcloud_installation_location=
-reference_file_location=
 basis_directory_for_output=
 basis_directory_for_spS-Gas=
 number_of_regions=
