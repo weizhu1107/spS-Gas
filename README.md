@@ -11,19 +11,42 @@ Required packages:
 7. PLINK and PLINK/SEQ.
 
 
-To run the pipeline:first fill in the config_to_run.txt. It includes 7 rows corresponding to 7 parameters. An example for the configure file is:
+To run the pipeline:first fill in the config_to_run.txt. It includes 10 rows corresponding to 10 parameters. An example for the configure file is:
 
-      haplotype_reference_file_location=/home/xc/bin/f.f                      ##haplotype referecne file location
-      basis_directory_for_output=/lustre/project                              ##directory to save outputs
-      basis_directory_for_bin=/home/bin                                       ##directory to bin files
-      number_of_regions=15                                                    ##number of regions want to simulated
-      region_length(b)=100000                                                 ##length for each region in base
-      prevalence=0.05                                                         ##disease prevalence
-      number_of_causal_alleles=10                                             ##number of causal alleles
+      Gotcloud_installation_location=                             ##directory to Gotcloud
+      basis_directory_for_output=                                 ##directory to save outputs
+      basis_directory_for_spS-Gas=                                ##directory to spS-Gas
+      number_of_regions=                                          ##number of regions to be simulated
+      region_length=                                              ##length for each region in base
+      prevalence=                                                 ##disease prevalence
+      number_of_cases=                                            ##number of cases
+      number_of_controls=                                         ##number of controls
+      number_of_causal_alleles=                                   ##number of causal alleles
+      sequencing_coverage=                                        ##sequencing coverage
 
 the end.
 
 Then:
       ./init.sh  config_to_run.txt                    ##The config_to_run.txt can be renamed but need to be the same format.
-      ./sample.sh
-      ./call.sh
+      ./sample.sh config_to_run.txt SN                ##SN is the serial number for the ith region
+      ./call.sh config_to_run.txt SN                  ##SN is the serial number for the ith region
+
+The program will create a folder with the name "SIM_n$number_of_cases_c$sequencing_coverage" under the specified output basis directory. Each region will have a same structured folder with its index number under the created folder. The called SNP file for the ith region is saved in a folder named "vcfs" within the directory of the ith region.
+
+The output file structure is shown below:
+Output_basis/
+      |...SIM_n2000_c20/
+            |...1/
+                  |...vcfs/
+                        |...chr22.vcf
+                        .
+                        .
+                        .*other filtered vcf files
+            |...2/
+            |...3/
+            .
+            .
+            .
+            
+
+the end.
