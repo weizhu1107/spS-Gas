@@ -6,7 +6,7 @@ while read line;do
 done < $1
 
 GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
-hap_ref=${ta[1]}                          		##SNP Reference: Eur.legend
+hap_ref=${ta[1]}                          		##Reference directory
 num_reg=${ta[4]}                          		##Number of regions created
 let REGION_LN=${ta[5]}                    		##Region length
 BASIS_DIR=${ta[2]}					##Basis_directory_for_output
