@@ -10,6 +10,7 @@ Required packages:
 6. ART sequencing reads simulator;
 7. PLINK and PLINK/SEQ.
 
+Before run, unzip the hap_ref.tar.gz file: tar -xf hap_ref.tar.gz. Do not move or rename the unzipped folder. Once unzipped, the original zip file can be deleted.
 
 To run the pipeline:first fill in the config_to_run.txt. It includes 10 rows corresponding to 10 parameters. An example for the configure file is:
 
