@@ -88,7 +88,7 @@ elif [ $numSamples -lt 1000 ];then
 	minSTZ=`echo $(printf "%.0f" $( echo "(-5 - -10) * (l(1000) - l($numSamples)) / (l(1000) - l(100) ) + -10" | bc -l))`
 fi
 
-$GOTCLOUD_ROOT/bin/vcfCooker --write-vcf --filter --maxDP $FILTER_MAX_DP --minDP $FILTER_MIN_DP --minNS $minNS --maxABL $maxABL --maxAOI 5 --maxCBR $maxCBR --maxLQR $maxLQR --maxMQ0 10 --maxSTR $maxSTR --maxSTZ $maxSTZ --minFIC $minFIC --minMQ 30 --minQual 30 --minSTR $minSTR --minSTZ $minSTZ --winIndel 5 --indelVCF $GOTCLOUD_ROOT/ref/1kg.pilot_release.merged.indels.sites.hg19.chr22.vcf --out $OUT_DIR/vcfs/chr22.hardfiltered.sites.vcf --in-vcf $OUT_DIR/vcfs/chr22.sites.vcf
+$GOTCLOUD_ROOT/bin/vcfCooker --write-vcf --filter --maxDP $FILTER_MAX_DP --minDP $FILTER_MIN_DP --minNS $minNS --maxABL $maxABL --maxAOI 5 --maxCBR $maxCBR --maxLQR $maxLQR --maxMQ0 10 --maxSTR $maxSTR --maxSTZ $maxSTZ --minFIC $minFIC --minMQ 30 --minQual 30 --minSTR $minSTR --minSTZ $minSTZ --winIndel 5 --indelVCF $hap_ref/1kg.pilot_release.merged.indels.sites.hg19.chr22.vcf --out $OUT_DIR/vcfs/chr22.hardfiltered.sites.vcf --in-vcf $OUT_DIR/vcfs/chr22.sites.vcf
 
 #svm
 #perl $GOTCLOUD_ROOT/scripts/run_libsvm.pl --invcf $OUT_DIR/vcfs/chr22.hardfiltered.sites.vcf --out $OUT_DIR/vcfs/chr22.filtered.sites.vcf --pos 100 --neg 100 --svmlearn $GOTCLOUD_ROOT/bin/svm-train --svmclassify $GOTCLOUD_ROOT/bin/svm-predict --bin $GOTCLOUD_ROOT/bin/invNorm --threshold 0 --bfile $GOTCLOUD_ROOT/ref/1000G_omni2.5.b37.sites.PASS.vcf.gz --bfile $GOTCLOUD_ROOT/ref/hapmap_3.3.b37.sites.vcf.gz --checkNA
