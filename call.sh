@@ -10,12 +10,13 @@ num_reg=${ta[3]}                          		##Number of regions created
 let REGION_LN=${ta[4]}                    		##Region length
 OUT_BASIS_DIR=${ta[1]}					##Basis_directory_for_output
 BASIS_DIR=${ta[2]}					##Basis_directory_for_bin
-let n_case=${ta[6]}					##Number of cases
-let n_control=${ta[7]}					##Number of controls
-let fcov=${ta[9]}					##Sequencing coverage
+
+let n_case=$2						##Number of cases
+let n_control=$3					##Number of controls
+let fcov=$4					##Sequencing coverage
 
 SCN="SIM_n"$n_case"_c"$fcov
-SN=$2
+SN=$5
 
 hap_ref=$BASIS_DIR"/hap_ref"
 OS_BIN=$BASIS_DIR"/script"
