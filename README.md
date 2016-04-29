@@ -27,9 +27,9 @@ the end.
 
 Then:
 
-      ./init.sh  config_to_run.txt                    ##The config_to_run.txt can be renamed but need to be the same format.
-      ./sample.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN                ##SN is the serial number for the ith region
-      ./call.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN                  ##SN is the serial number for the ith region
+      ./init.sh  config_to_run.txt                                                                          ##The config_to_run.txt can be renamed but need to be the same format.
+      ./sample.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN               ##SN is the serial number for the ith region
+      ./call.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN                 ##SN is the serial number for the ith region
 
 The init.sh will create the necessary files given settings of global parameters specificed in config_to_run.txt.
 
