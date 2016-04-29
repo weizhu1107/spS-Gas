@@ -4,12 +4,13 @@ Simulation pipeline for sequencing based genetic association study
 Required packages:
 1. Python >2.6.0;
 2. Perl;
-2. R program;
-3. Hapgen2;
-4. Impute2;
-5. Gotcloud;
-6. ART sequencing reads simulator;
-7. PLINK and PLINK/SEQ.
+3. R program;
+4. Hapgen2;
+5. Impute2;
+6. Gotcloud;
+7. ART sequencing reads simulator;
+8. PLINK and PLINK/SEQ;
+9. Vcftools.
 
 Before run, unzip the hap_ref.tar.gz file: tar -xf hap_ref.tar.gz. Do not move or rename the unzipped folder. Once unzipped, the original zip file can be deleted.
 
