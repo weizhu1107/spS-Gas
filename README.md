@@ -29,8 +29,8 @@ the end.
 
 Then:
       ./init.sh  config_to_run.txt                    ##The config_to_run.txt can be renamed but need to be the same format.
-      ./sample.sh config_to_run.txt SN                ##SN is the serial number for the ith region
-      ./call.sh config_to_run.txt SN                  ##SN is the serial number for the ith region
+      ./sample.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN                ##SN is the serial number for the ith region
+      ./call.sh config_to_run.txt number_of_cases number_of_controls sequencing_coverage SN                  ##SN is the serial number for the ith region
 
 The program will create a folder with the name "SIM_n$number_of_cases_c$sequencing_coverage" under the specified output basis directory. Each region will have a same structured folder with its index number under the created folder. The called SNP file for the ith region is saved in a folder named "vcfs" within the directory of the ith region.
 
