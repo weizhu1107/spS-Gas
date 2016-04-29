@@ -10,7 +10,7 @@ let REGION_LN=${a[4]}                    ##Region length
 OUT_BASIS_DIR=${a[1]}			##Basis_directory_for_output
 BASIS_DIR=${a[2]}				##Basis_directory_for_bin
 prev=${a[5]}				##Prevalence
-let nc=${a[8]}				##Number of causal alleles
+let nc=${a[6]}				##Number of causal alleles
 
 hap_ref=$BASIS_DIR"/hap_ref"
 REG_DIR=$OUT_BASIS_DIR/region                   ##Region file directory
