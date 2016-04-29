@@ -3,6 +3,7 @@ Simulation pipeline for sequencing based genetic association study
 
 Required packages:
 1. Python >2.6.0;
+2. Perl;
 2. R program;
 3. Hapgen2;
 4. Impute2;
