@@ -6,12 +6,9 @@ while read line;do
 done < $1
 
 GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
-num_reg=${ta[3]}                          		##Number of regions created
 let REGION_LN=${ta[4]}                    		##Region length
 OUT_BASIS_DIR=${ta[1]}					##Basis_directory_for_output
 BASIS_DIR=${ta[2]}					##Basis_directory_for_spS-Gas
-prev=${ta[5]}						##Prevalence
-let nc=${ta[8]}						##Number of causal alleles
 
 let n_case=$2						##Number of cases
 let n_control=$3					##Number of controls
