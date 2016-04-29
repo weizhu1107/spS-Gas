@@ -20,10 +20,7 @@ To run the pipeline:first fill in the config_to_run.txt. It includes 10 rows cor
       number_of_regions=                                          ##number of regions to be simulated
       region_length=                                              ##length for each region in base
       prevalence=                                                 ##disease prevalence
-      number_of_cases=                                            ##number of cases
-      number_of_controls=                                         ##number of controls
       number_of_causal_alleles=                                   ##number of causal alleles
-      sequencing_coverage=                                        ##sequencing coverage
 
 the end.
 
