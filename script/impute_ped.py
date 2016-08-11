@@ -33,7 +33,14 @@ for line in lines:
                 ouf.write(" "+gp)
 
         ouf.write("\n")
-
+        
 ouf.close()
 sam.close()
+
+mf=open("impute_assoc.map", 'w')
+for gen_line in gend:
+        data_gen=gen_line.strip().split(" ")
+        mf.write(data_gen[0]+" "+data_gen[0]+":"+data_gen[2]+" 0 "+data_gen[2]+"\n")
+
 genf.close()
+mf.close()
