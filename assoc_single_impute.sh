@@ -13,15 +13,11 @@ data_dir=$OUT_BASIS_DIR/impute/$2/$SN
 
 cd $data_dir
 
-if [ ! -f "impute_assoc.ped" ];then
+if [[ ! -f "impute_assoc.ped" || ! -f "impute_assoc.map" ]];then
 	IFS='_' read -a array <<< "$1"
 	mp="${array[3]}_${array[4]}_${array[5]}"
 	cp $OUT_BASIS_DIR/$mp/1/impute_study.gen.samples ./
 	$BASIS_DIR/script/impute_ped.py impute_study.gen.samples
-fi
-
-if [ ! -f "impute_assoc.map" ];then
-	$BASIS_DIR/script/impute_map.py
 fi
 
 if [ -f "impute_assoc.ped" ];then
