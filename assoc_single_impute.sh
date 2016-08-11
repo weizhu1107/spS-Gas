@@ -14,15 +14,10 @@ data_dir=$OUT_BASIS_DIR/impute/$2/$SN
 cd $data_dir
 
 if [ ! -f "impute_assoc.ped" ];then
-	cd ../
 	IFS='_' read -a array <<< "$1"
 	mp="${array[3]}_${array[4]}_${array[5]}"
-	mkdir -p tmp
-	cp $OUT_BASIS_DIR/$mp/1/impute_study.gen.samples tmp/
-	$BASIS_DIR/script/impute_ped.py tmp/impute_study.gen.samples
-	cp tmp/impute_assoc.ped $2/$SN/
-	rm -rf tmp
-	cd $data_dir
+	cp $OUT_BASIS_DIR/$mp/1/impute_study.gen.samples ./
+	$BASIS_DIR/script/impute_ped.py impute_study.gen.samples
 fi
 
 if [ ! -f "impute_assoc.map" ];then
