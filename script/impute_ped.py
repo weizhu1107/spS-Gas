@@ -4,8 +4,7 @@ import sys, os
 fn=sys.argv[1]
 sam=open(fn, 'r')
 lines=sam.readlines()
-ofn=fn.split("_")[0]+"_assoc.ped"
-ouf=open(ofn, 'w')
+ouf=open("impute_assoc.ped", 'w')
 
 genf=open("impute", "r")
 n=0
