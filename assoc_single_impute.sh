@@ -20,8 +20,13 @@ if [ ! -f "impute_assoc.ped" ];then
 	mkdir -p tmp
 	cp $OUT_BASIS_DIR/$mp/1/impute_study.gen.samples tmp/
 	$BASIS_DIR/script/impute_ped.py tmp/impute_study.gen.samples
-	cp tmp/impute_assoc.ped $2/
+	cp tmp/impute_assoc.ped $2/$SN/
 	rm -rf tmp
+	cd $data_dir
+fi
+
+if [ ! -f "impute_assoc.map" ];then
+	$BASIS_DIR/script/impute_map.py
 fi
 
 if [ -f "impute_assoc.ped" ];then
