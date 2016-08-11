@@ -15,9 +15,9 @@ for line in lines:
         data = line.strip().split(" ")
         n=n+1
         if n <= tn:
-		ouf.write(data[0]+" 1\n")
+		ouf.write(data[0]+" 1")
 	else:						#case
-		ouf.write(data[0]+" 2\n")
+		ouf.write(data[0]+" 2")
         
         for genl in gend:
                 data_gen = genl.strip().split(" ")
