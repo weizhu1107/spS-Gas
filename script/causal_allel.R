@@ -8,7 +8,6 @@
 #*********************************************************************************
 
 
-#sn=commandArgs(TRUE)[1]
 fn=commandArgs(TRUE)[1]				##SNP ref file location.
 ofn=commandArgs(TRUE)[2]			##Output causal SNP list file.
 d=read.table(fn,header=T,sep=" ")
