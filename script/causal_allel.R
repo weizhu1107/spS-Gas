@@ -9,9 +9,7 @@
 
 
 #sn=commandArgs(TRUE)[1]
-#fn=paste("/DataStorage/Backup/xc/ngs/h_legend_maf/",sn,".txt",sep="")
 fn=commandArgs(TRUE)[1]				##SNP ref file location.
-#ofn=paste("/DataStorage/Backup/xc/ngs/causal_list/",sn,".txt",sep="")
 ofn=commandArgs(TRUE)[2]			##Output causal SNP list file.
 d=read.table(fn,header=T,sep=" ")
 
