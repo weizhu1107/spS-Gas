@@ -12,7 +12,7 @@ LGD_DIR=$OUT_BASIS_DIR/legend_maf               ##Legend file directory
 mkdir -p $LGD_DIR
 
 
-f=$hap_ref"/1000GP_CHR22_EUR.legend"
+f=$hap_ref"/chr22_EUR.legend"
 
 for i in `seq 1 $num_reg`;do
   echo $i
