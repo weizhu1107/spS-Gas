@@ -1,17 +1,11 @@
 #!/bin/bash
-count=0
-while read line;do
-        ta[$count]=${line##*=}
-        count=$(( $count + 1 ))
-done < $1
-
 GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
 num_reg=${ta[3]}                          		##Number of regions created
-let REGION_LN=${ta[4]}                    		##Region length
+let REGION_LN=100000	                   		##Region length
 OUT_BASIS_DIR=${ta[1]}					##Basis_directory_for_output
 BASIS_DIR=${ta[2]}					##Basis_directory_for_bin
 
-let n_case=$2						##Number of cases
+let n_case=0						##Number of cases
 let n_control=$3					##Number of controls
 let fcov=$4					##Sequencing coverage
 
