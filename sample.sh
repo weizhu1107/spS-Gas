@@ -1,15 +1,15 @@
 #!/bin/bash
-GOTCLOUD_ROOT=${ta[0]}						##Gotcloud installed directory
+GOTCLOUD_ROOT="/extra/wzhu3/genotype_imputation/gotcloud"	##Gotcloud installed directory
 let REGION_LN=100000                    			##Region length
 OUT_BASIS_DIR="/extra/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
 BASIS_DIR="/extra/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
 
 let n_case=0						##Number of cases
-let n_control=$3					##Number of controls
-let fcov=$4						##Sequencing coverage
+let n_control=$1					##Number of controls
+let fcov=$2						##Sequencing coverage
 
-SCN="impute_n"
-SN=$5
+SCN="impute_n"$n_control"_c"$f_cov
+SN=$3
 
 hap_ref=$BASIS_DIR"/hap_ref"
 OS_BIN=$BASIS_DIR"/bin"
