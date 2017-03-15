@@ -1,5 +1,4 @@
 #!/bin/bash
-
 num_reg=1000                          ##Number of regions created
 let REGION_LN=100000                    ##Region length
 OUT_BASIS_DIR="/extra/wzhu3/genotype_imputation/Output/"			##Basis_directory_for_output
