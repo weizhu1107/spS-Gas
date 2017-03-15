@@ -1,27 +1,20 @@
 #!/bin/bash
-count=0
-while read line;do
-        ta[$count]=${line##*=}
-        count=$(( $count + 1 ))
-done < $1
+GOTCLOUD_ROOT=${ta[0]}						##Gotcloud installed directory
+let REGION_LN=100000                    			##Region length
+OUT_BASIS_DIR="/extra/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
+BASIS_DIR="/extra/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
 
-GOTCLOUD_ROOT=${ta[0]}					##Gotcloud installed directory
-let REGION_LN=${ta[4]}                    		##Region length
-OUT_BASIS_DIR=${ta[1]}					##Basis_directory_for_output
-BASIS_DIR=${ta[2]}					##Basis_directory_for_spS-Gas
-
-let n_case=$2						##Number of cases
+let n_case=0						##Number of cases
 let n_control=$3					##Number of controls
 let fcov=$4						##Sequencing coverage
 
-SCN="SIM_n"$n_case"_c"$fcov
+SCN="impute_n"
 SN=$5
 
 hap_ref=$BASIS_DIR"/hap_ref"
-OS_BIN=$BASIS_DIR"/script"
+OS_BIN=$BASIS_DIR"/bin"
 OUT_DIR=$OUT_BASIS_DIR"/"$SCN"/"$SN			##Scenario name of $4; serial number of $5
 REGION_FL=$OUT_BASIS_DIR"/region/"$SN".txt"		##Region file location
-CAUSAL_FL=$OUT_BASIS_DIR"/causal_list/"$SN".txt"		##Causal SNP file location
 
 mkdir -p $OUT_DIR
 f=$hap_ref"/chr22_EUR.legend"
@@ -32,21 +25,14 @@ while read line;do
         count=$(( $count + 1 ))
 done < $REGION_FL
 
-c_ln=0
-causl_l=""
-while read -a c_dd;do
-	if [[ "$c_ln" -gt "0" && "$c_ln" -lt "16" ]];then
-		causl_l=$causl_l${c_dd[1]}" 1 "${c_dd[5]}" "${c_dd[6]}" "
-	fi
-	c_ln=$(( $c_ln + 1 ))
-done < $CAUSAL_FL
+causl_l=$causl_l${a[2]}" 1 1.2 1.6"
 
 let LOW_BOUND=${a[0]}
 let UP_BOUND=${a[1]}
 let LOW_BOUND_L=$(($LOW_BOUND - 500))
 let UP_BOUND_R=$(($UP_BOUND + 500))
 
-hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -o $OUT_DIR/h -dl $causl_l -n $n_case $n_control -int $LOW_BOUND $UP_BOUND >$OUT_DIR/debug.txt
+hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -dl $causl_l -o $OUT_DIR/h -n $n_control $n_case -int $LOW_BOUND $UP_BOUND >$OUT_DIR/debug.txt
 
 echo "hapgen2 completed..."
 echo "LOW_BOUND:"$LOW_BOUND > $OUT_DIR/config.txt
