@@ -18,8 +18,6 @@ for i in `seq 1 $num_reg`;do
   echo $i
   cl=`shuf -i 311-308149 -n 1`
   mp=`sed -n "$cl p" $f | cut -f2`
-  mp_n=`sed -n "$cl p" $f | cut -f1`
-  mp_af=`sed -n "$cl p" $f | cut -f5`
   tl=`shuf -i 1-$REGION_LN -n 1`
 
   let LOW_BOUND=$(($mp - $tl))
@@ -27,6 +25,7 @@ for i in `seq 1 $num_reg`;do
 
   echo "LOW_BOUND:"$LOW_BOUND > $REG_DIR/$i.txt
   echo "UP_BOUND:"$UP_BOUND >> $REG_DIR/$i.txt
+  echo "Causal_allel:"$mp >> $REG_DIR/$i.txt
   
   $BASIS_DIR/bin/init_legend_dir.py $f $LOW_BOUND $UP_BOUND $LGD_DIR/$i
 done
