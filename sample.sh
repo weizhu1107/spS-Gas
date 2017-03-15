@@ -37,7 +37,7 @@ echo "LOW_BOUND:"$LOW_BOUND > $OUT_DIR/config.txt
 echo "UP_BOUND:"$UP_BOUND >> $OUT_DIR/config.txt
 echo "n_case:"$n_case >> $OUT_DIR/config.txt
 echo "n_control:"$n_control >> $OUT_DIR/config.txt
-echo "f_cov:"$fcov >> $OUT_DIR/config.txt
+echo "f_cov:"$f_cov >> $OUT_DIR/config.txt
 
 CHR=22
 LN=51304566
