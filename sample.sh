@@ -29,8 +29,6 @@ causl_l=$causl_l${a[2]}" 1 1.2 1.6"
 
 let LOW_BOUND=${a[0]}
 let UP_BOUND=${a[1]}
-let LOW_BOUND_L=$(($LOW_BOUND - 500))
-let UP_BOUND_R=$(($UP_BOUND + 500))
 
 hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -dl $causl_l -o $OUT_DIR/h -n $n_control $n_case -int $LOW_BOUND $UP_BOUND >$OUT_DIR/debug.txt
 
@@ -50,7 +48,6 @@ $OS_BIN/hap_to_fa.py $OUT_DIR/chr22.fa $CHR $LOW_BOUND $REGION_LN $OUT_DIR/t.fa
 
 echo "fa_per_subject"
 mkdir -p $OUT_DIR/fasta
-$OS_BIN/fa_per_subject.py $OUT_DIR/t.fa $OUT_DIR/h.legend $OUT_DIR/h.cases.haps $LOW_BOUND $UP_BOUND $OUT_DIR $OUT_DIR/h.cases.sample
 $OS_BIN/fa_per_subject.py $OUT_DIR/t.fa $OUT_DIR/h.legend $OUT_DIR/h.controls.haps $LOW_BOUND $UP_BOUND $OUT_DIR $OUT_DIR/h.controls.sample
 
 mkdir -p $OUT_DIR/read
@@ -83,7 +80,6 @@ func_S3(){
 	rm -f $OUT_DIR/read/$i[1-2].aln
 	rm -f $OUT_DIR/read/$i[1-2].fq
 	printf "$i\tALL\t$BAM_NAME\n" >> $OUT_DIR/bam.index
-#	$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $GOTCLOUD_ROOT/bin/samtools-hybrid calmd -uAEbr - $GOTCLOUD_ROOT/ref/human.g1k.v37.fa | $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | $GOTCLOUD_ROOT/bin/samtools-hybrid pileup -f $GOTCLOUD_ROOT/ref/human.g1k.v37.fa -g - > $OUT_DIR/glfs/$i.glf
 	$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $GOTCLOUD_ROOT/bin/samtools-hybrid calmd -uAEbr - $hap_ref/chr22.fa| $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | $GOTCLOUD_ROOT/bin/samtools-hybrid pileup -f $hap_ref/chr22.fa -g - > $OUT_DIR/glfs/$i.glf
 	rm -f $OUT_DIR/read/$i"_sorted.bam"
 	rm -f $OUT_DIR/read/$i"_sorted.bam.bai"
