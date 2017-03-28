@@ -1,8 +1,8 @@
 #!/bin/bash
-GOTCLOUD_ROOT="/extra/wzhu3/genotype_imputation/gotcloud"	##Gotcloud installed directory
+GOTCLOUD_ROOT="/lustre/project/hdeng2/wzhu3/genotype_imputation/gotcloud"	##Gotcloud installed directory
 let REGION_LN=100000                    			##Region length
-OUT_BASIS_DIR="/extra/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
-BASIS_DIR="/extra/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
+OUT_BASIS_DIR="/lustre/project/hdeng2/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
+BASIS_DIR="/lustre/project/hdeng2/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
 
 let n_case=0						##Number of cases
 let n_control=$1					##Number of controls
