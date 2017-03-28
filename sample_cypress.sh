@@ -2,13 +2,22 @@
 GOTCLOUD_ROOT="/home/cxu2/gotcloud"
 OS_BIN="/home/cxu2/ngs/bin"
 OWN_BIN="/home/cxu2/bin"
-OUT_DIR="/lustre/project/hdeng2/xc/ngs/"$1"/"$2
-REGION_FL="/lustre/project/hdeng2/xc/ngs/region/"$2".txt"
-CAUSAL_FL="/lustre/project/hdeng2/xc/ngs/causal_list/"$2".txt"
+let REGION_LN=100000                    			##Region length
+OUT_BASIS_DIR="/lustre/project/hdeng2/wzhu/genotype_imputation/Output"		##Basis_directory_for_output
+BASIS_DIR="/lustre/project/hdeng2/wzhu/genotype_imputation"			##Basis_directory_for_spS-Gas
+
+let n_case=0						##Number of cases
+let n_control=$1					##Number of controls
+let fcov=$2						##Sequencing coverage
+
+SCN="impute_n"$n_control"_c"$f_cov
+SN=$3
+
+hap_ref=$BASIS_DIR"/1000Genome"
+OUT_DIR=$OUT_BASIS_DIR"/"$SCN"/"$SN			##Scenario name of $4; serial number of $5
+REGION_FL=$OUT_BASIS_DIR"/region/"$SN".txt"
 
 mkdir -p $OUT_DIR
-let REGION_LN=100000
-hap_ref="/lustre/project/hdeng2/xc/hap_ref"
 f=$hap_ref"/chr22_EUR.legend"
 
 LD_LIBRARY_PATH=/home/cxu2/local/lib:/usr/local/lib:$LD_LIBRARY_PATH
@@ -22,23 +31,15 @@ done < $REGION_FL
 
 c_ln=0
 causl_l=""
-while read -a c_dd;do
-        if [[ "$c_ln" -gt "0" && "$c_ln" -lt "16" ]];then
-                causl_l=$causl_l${c_dd[1]}" 1 "${c_dd[5]}" "${c_dd[6]}" "
-        fi
-        c_ln=$(( $c_ln + 1 ))
-done < $CAUSAL_FL
+causl_l=$causl_l${a[2]}" 1 1.2 1.6"
 
 let LOW_BOUND=${a[0]}
 let UP_BOUND=${a[1]}
 let LOW_BOUND_L=$(($LOW_BOUND - 500))
 let UP_BOUND_R=$(($UP_BOUND + 500))
-n_case=$3
-n_control=$4
-fcov=$5
-$OWN_BIN/hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -o $OUT_DIR/h -dl $causl              _l -n $n_case $n_control -int $LOW_BOUND $UP_BOUND
 
-if [ -f $OUT_DIR/h.legend ];then
+$OWN_BIN/hapgen2 -m $hap_ref/chr22_combined_b37.txt -l $hap_ref/chr22_EUR.legend -h $hap_ref/chr22_EUR.hap -dl $causl_l -o $OUT_DIR/h -n $n_control $n_case -int $LOW_BOUND $UP_BOUND >$OUT_DIR/debug.txt
+
 echo "hapgen2 completed..."
 echo "LOW_BOUND:"$LOW_BOUND > $OUT_DIR/config.txt
 echo "UP_BOUND:"$UP_BOUND >> $OUT_DIR/config.txt
@@ -148,10 +149,9 @@ bash -c "set -e -o pipefail; perl $GOTCLOUD_ROOT/scripts/vcfPaste.pl $OUT_DIR/vc
 $GOTCLOUD_ROOT/src/bin/tabix -f -pvcf $OUT_DIR/vcfs/chr22.filtered.vcf.gz
 bash -c "set -e -o pipefail; zcat $OUT_DIR/vcfs/chr22.filtered.vcf.gz | grep -E \"\sPASS\s|^#\" | $GOTCLOUD_ROOT/src/bin/bgzip -c >               $OUT_DIR/vcfs/chr22.filtered.PASS.vcf.gz"
 
-else
-        rm -rf $OUT_DIR
+
 #       $OS_BIN/sample_v2.sh $1 $2 $3 $4 $5
-fi
+
 #beagle
 #mkdir --p $OUT_DIR/beagle
 #perl $GOTCLOUD_ROOT/scripts/vcf2Beagle.pl --PL --in $OUT_DIR/vcfs/chr22.filtered.PASS.vcf.gz --out $OUT_DIR/beagle/chr22.PASS.gz
