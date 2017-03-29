@@ -1,8 +1,8 @@
 #!/bin/bash
-GOTCLOUD_ROOT="/extra/wzhu3/genotype_imputation/gotcloud"	##Gotcloud installed directory
+GOTCLOUD_ROOT="/lustre/project/hdeng2/wzhu3/genotype_imputation/gotcloud"	##Gotcloud installed directory
 let REGION_LN=100000                    			##Region length
-OUT_BASIS_DIR="/extra/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
-BASIS_DIR="/extra/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
+OUT_BASIS_DIR="/lustre/project/hdeng2/wzhu3/genotype_imputation/Output"		##Basis_directory_for_output
+BASIS_DIR="/lustre/project/hdeng2/wzhu3/genotype_imputation"			##Basis_directory_for_spS-Gas
 
 let n_case=0						##Number of cases
 let n_control=$1					##Number of controls
@@ -56,37 +56,31 @@ mkdir -p $OUT_DIR/vcfs
 touch $OUT_DIR/vcfs/glfIndex.ped
 touch $OUT_DIR/bam.index
 
-##function for parallel computing
-func_S3(){
-	LN=$8
-	LOW_BOUND=$7
-	UP_BOUND_R=$6
-	LOW_BOUND_L=$5
-	CHR=$4
-	GOTCLOUD_ROOT=$3
-	OUT_DIR=$2
-	fcov=$9
-	OS_BIN=${10}
-	hap_ref=${11}
-	i=$1
-	a=${i##*/}i
-	i=${a%.*}
-	art_illumina -sam -i $OUT_DIR/fasta/$i.fa -p -l 125 -f $fcov -m 200 -s 10 -o $OUT_DIR/read/$i >> $OUT_DIR/art.log
-	$OS_BIN/sam_offset.py $OUT_DIR/read/$i.sam $LOW_BOUND $8
-	$GOTCLOUD_ROOT/bin/samtools view -ubS $OUT_DIR/read/$i.sam | $GOTCLOUD_ROOT/bin/samtools sort - $OUT_DIR/read/$i"_sorted"
-	$GOTCLOUD_ROOT/bin/samtools index $OUT_DIR/read/$i"_sorted.bam"
-	BAM_NAME=$OUT_DIR/read/$i"_sorted.bam"
-	rm -f $OUT_DIR/read/$i.sam
-	rm -f $OUT_DIR/read/$i[1-2].aln
-	rm -f $OUT_DIR/read/$i[1-2].fq
-	printf "$i\tALL\t$BAM_NAME\n" >> $OUT_DIR/bam.index
-	$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $GOTCLOUD_ROOT/bin/samtools-hybrid calmd -uAEbr - $hap_ref/chr22.fa| $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | $GOTCLOUD_ROOT/bin/samtools-hybrid pileup -f $hap_ref/chr22.fa -g - > $OUT_DIR/glfs/$i.glf
-	rm -f $OUT_DIR/read/$i"_sorted.bam"
-	rm -f $OUT_DIR/read/$i"_sorted.bam.bai"
-}
+module load samtools
 
-export -f func_S3
-echo "sim sequencing reads"
-parallel --no-notice -j8 "func_S3 {}" ::: $OUT_DIR/fasta/* ::: $OUT_DIR ::: $GOTCLOUD_ROOT ::: $CHR ::: $LOW_BOUND_L ::: $UP_BOUND_R ::: $LOW_BOUND ::: $LN ::: $fcov ::: $OS_BIN ::: $hap_ref
+for i in $OUT_DIR/fasta/*;do
+        a=${i##*/}i
+        i=${a%.*}
+        $OWN_BIN/art_illumina -sam -i $OUT_DIR/fasta/$i.fa -p -l 125 -f $fcov -m 200 -s 10 -o $OUT_DIR/read/$i >> $OUT_DIR/art.log
+        $OS_BIN/sam_offset.py $OUT_DIR/read/$i.sam $LOW_BOUND $LN
+        samtools view -ubS $OUT_DIR/read/$i.sam | samtools sort - $OUT_DIR/read/$i
+        samtools index $OUT_DIR/read/$i".bam"
+        BAM_NAME=$OUT_DIR/read/$i".bam"
+        rm -f $OUT_DIR/read/$i.sam
+        rm -f $OUT_DIR/read/$i[1-2].aln
+        rm -f $OUT_DIR/read/$i[1-2].fq
+        printf "$i\tALL\t$BAM_NAME\n" >> $OUT_DIR/bam.index
 
-rm -Rf $OUT_DIR/fasta &
+        #$GOTCLOUD_ROOT/bin/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i".bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $GOTCLO                UD_ROOT/bin/samtools-hybrid calmd -uAEbr - $OUT_DIR/chr22.fa | $GOTCLOUD_ROOT/bin/bam clipOverlap --in -.ubam --out -.ubam --phoneHo                meThinning 0 | $GOTCLOUD_ROOT/bin/samtools-hybrid pileup -f $OUT_DIR/chr22.fa -g - > $OUT_DIR/glfs/$i".glf"
+        $OWN_BIN/samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i".bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | $OWN_BIN/samtools-                hybrid calmd -uAEbr - $OUT_DIR/chr22.fa | $OWN_BIN/bam clipOverlap --in -.ubam --out -.ubam --phoneHomeThinning 0 | $OWN_BIN/samtool                s-hybrid pileup -f $OUT_DIR/chr22.fa -g - > $OUT_DIR/glfs/$i".glf"
+#       samtools-hybrid view -q 20 -F 0x0704 -uh $OUT_DIR/read/$i"_sorted.bam"  $CHR:$LOW_BOUND_L-$UP_BOUND_R | samtools-hybrid calm                d -uAEbr - $GOTCLOUD_ROOT/ref/human.g1k.v37.fa > $OUT_DIR/read/$i"_sorted_im.bam"
+        rm -f $OUT_DIR/read/$i"_sorted.bam"
+        rm -f $OUT_DIR/read/$i"_sorted.bam.bai"
+        rm -f $OUT_DIR/read/$i".bam"
+        rm -f $OUT_DIR/read/$i".bam.bai"
+        rm -f $OUT_DIR/fasta/$i".fa"
+
+done
+
+rm -rf $OUT_DIR/fasta
+
